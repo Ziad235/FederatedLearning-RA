@@ -49,3 +49,14 @@ For elaboration, the closer the value is to 0 the better fit the model is to the
 This measure is a continuous value (_read: positive real number_) between 0 and 1 that represents an approximation of model prediciton accuracy (the closer to 1 the more accurate). <br />
 For context, this metric is given by simply evaluating $e^{-LL}$, where $LL$ is the Logistic Loss value of the final global model.
 
+## Data
+I used 6 distinct datasets (retrieved from UCI except one of them, which was personally sent to me by Professor Fida), each with its own number of clients. <br />
+The datasets had outcome variables that were either binary or categorical. <br />
+Further information about the datasets can be found in the "Project_Information" folder.
+
+## Results
+The results confirmed our hypothesis, with a substantial differences in total number of iterations and computational time needed for global model convergence and comparable accuracies.
+
+#### 
+Please read into the "Project_Information" folder to learn and understand more about this project and its impactful results. <br />
+Federated Learning is a ground-breaking idea that advances the use of data privacy in and brings it at the forefront of producing highly scalable and reliable models.
