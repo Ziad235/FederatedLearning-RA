@@ -14,21 +14,21 @@ Using synthetic data on any machine learning model in a Federated Learning envio
 
 ## Research Methods
 
-### <ins> Enviornment Setup </ins>
+### Enviornment Setup
 To create a Federated Learning enviornment, I used [TensorFlow Federated API](https://www.tensorflow.org/federated/api_docs/python/tff).
 
-### <ins> Machine Learning Model </ins>
+### Machine Learning Model 
 I used a logisitc regression model as the main machine learning model for each client, since linear regression was used in the original paper instead. <br />
 
-### <ins> Synthetic Data Generator </ins>
+### Synthetic Data Generator
 To generate the synthetic data, I automated the process of using synthpop (non-parametric) synthetic data generator that can be found in this [repository](https://github.com/hazy/synthpop).
 
-### <ins> Credibility of Final Global Model </ins>
+### Credibility of Final Global Model 
 To have concrete criterea for global model convergence, I used Binary Cross Entropy and Categorical Cross Entropy (which are basically Logistic Loss functions for binary and categorical classification, rspectively). <br />
 
 Within those loss (cost) functions, I incroporated elastic-net regularization in order to enhance model accuracy, and I used gradient descent to optimize the choice of model parameters with each client-server iteration. <br />
 
-### <ins> Global Model Metrics </ins>
+### Global Model Metrics 
 To have concrete evidence that supports the hypothesis, I used a total of 5 metrics to compare final results.
 
 1. <ins> Total Number of Iterations for Global Model Convergence </ins> <br />
