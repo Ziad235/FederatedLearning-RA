@@ -55,7 +55,15 @@ The datasets had outcome variables that were either binary or categorical. <br /
 Further information about the datasets can be found in the "Project_Information" folder.
 
 ## Results
-The results confirmed our hypothesis, with a substantial differences in total number of iterations and computational time needed for global model convergence and comparable accuracies.
+The results confirmed our hypothesis, with a substantial differences in total number of iterations and computational time needed for global model convergence and comparable accuracies. <br />
+Further details can be found in the "Project_Information" folder.
 
-Please read into the "Project_Information" folder to learn and understand more about this project and its impactful results. <br />
-Federated Learning is a ground-breaking idea that advances the use of data privacy in and brings it at the forefront of producing highly scalable and reliable models.
+## Further Notes
+Please read the "Project_Information" folder to learn and understand more about this project and its impactful results. <br />
+
+Federated Learning is a ground-breaking idea that advances the use of data privacy in and brings it at the forefront of producing highly scalable and reliable models. <br />
+
+Feel free to reach out to [me](mailto:zmh6339@nyu.edu) and/or [Professor Fida Dankar](mailto:fd2242@nyu.edu) for any questions. <br />
+
+*Please note that for (intellectual) copyright reasons, concrete code cannot be published now until the typed up paper is submitted and accepted for publishing.
+
