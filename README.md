@@ -10,7 +10,7 @@ The results of this experiment are currently being typed up and will then be sub
 
 Using synthetic data on any machine learning model in a Federated Learning enviornment results in a statistically significant decrease in the total number of iterations and computational time needed for global model convergence while still maintaining a comparable accuracy[^1] to the global model that was achieved without the use of synthetic data. 
 
-[^1]: The differences between the final global model's performance when using synthetic data and not using synthetic data are statistically significant.
+[^1]: The differences between the final global model's performance when using synthetic data and not using synthetic data are statistically insignificant.
 
 ## Research Methods
 
