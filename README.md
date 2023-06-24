@@ -15,21 +15,21 @@ Using synthetic data on any machine learning model in a Federated Learning envio
 ## Research Methods
 
 + ### Enviornment Setup
-> To create a Federated Learning enviornment, I used [TensorFlow Federated API](https://www.tensorflow.org/federated/api_docs/python/tff).
+To create a Federated Learning enviornment, I used [TensorFlow Federated API](https://www.tensorflow.org/federated/api_docs/python/tff).
 
 + ### Machine Learning Model
-> I used a logisitc regression model as the main machine learning model for each client, since linear regression was used in the original paper instead. <br />
+I used a logisitc regression model as the main machine learning model for each client, since linear regression was used in the original paper instead. <br />
 
 + ### Synthetic Data Generator
-> To generate the synthetic data, I automated the process of using synthpop (non-parametric) synthetic data generator that can be found in this [repository](https://github.com/hazy/synthpop).
+To generate the synthetic data, I automated the process of using synthpop (non-parametric) synthetic data generator that can be found in this [repository](https://github.com/hazy/synthpop).
 
 + ### Credibility of Final Global Model
-> To have concrete criterea for global model convergence, I used Binary Cross Entropy and Categorical Cross Entropy (which are basically Logistic Loss functions for binary and categorical classification, rspectively). <br />
+To have concrete criterea for global model convergence, I used Binary Cross Entropy and Categorical Cross Entropy (which are basically Logistic Loss functions for binary and categorical classification, rspectively). <br />
 
-> Within those loss (cost) functions, I incroporated elastic-net regularization in order to enhance model accuracy, and I used gradient descent to optimize the choice of model parameters with each client-server iteration. <br />
+Within those loss (cost) functions, I incroporated elastic-net regularization in order to enhance model accuracy, and I used gradient descent to optimize the choice of model parameters with each client-server iteration. <br />
 
 + ### Global Model Metrics
-> To have concrete evidence that supports the hypothesis, I used a total of 5 metrics to compare final results.
+To have concrete evidence that supports the hypothesis, I used a total of 5 metrics to compare final results.
 
 1. <u> Total Number of Iterations for Global Model Convergence </u>
 This measure is a discrete value (_read: natural number_) that represents the total number of times for client-server iterations required to reach global model convergence 
