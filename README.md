@@ -57,6 +57,5 @@ Further information about the datasets can be found in the "Project_Information"
 ## Results
 The results confirmed our hypothesis, with a substantial differences in total number of iterations and computational time needed for global model convergence and comparable accuracies.
 
-#### 
 Please read into the "Project_Information" folder to learn and understand more about this project and its impactful results. <br />
 Federated Learning is a ground-breaking idea that advances the use of data privacy in and brings it at the forefront of producing highly scalable and reliable models.
