@@ -10,28 +10,28 @@ The results of this experiment are currently being typed up and will then be sub
 
 Using synthetic data on any machine learning model in a Federated Learning enviornment results in a statistically significant decrease in the total number of iterations and computational time needed for global model convergence while still maintaining a comparable accuracy[^1] to the global model that was achieved without the use of synthetic data. 
 
-[^1]: The differences between the final global model's prediction accuracy, model fit, and error rate when using synthetic data and not using synthetic data are statistically significant.
+[^1]: The differences between the final global model's performance when using synthetic data and not using synthetic data are statistically significant.
 
 ## Research Methods
 
-### <u> Enviornment Setup </u>
+<u> ### Enviornment Setup </u>
 To create a Federated Learning enviornment, I used [TensorFlow Federated API](https://www.tensorflow.org/federated/api_docs/python/tff).
 
-### <u> Machine Learning Model </u>
+<u> ### Machine Learning Model </u>
 I used a logisitc regression model as the main machine learning model for each client, since linear regression was used in the original paper instead. <br />
 
-### <u> Synthetic Data Generator </u>
+<u> ### Synthetic Data Generator </u>
 To generate the synthetic data, I automated the process of using synthpop (non-parametric) synthetic data generator that can be found in this [repository](https://github.com/hazy/synthpop).
 
-### <u> Credibility of Final Global Model </u>
+<u> ### Credibility of Final Global Model </u>
 To have concrete criterea for global model convergence, I used Binary Cross Entropy and Categorical Cross Entropy (which are basically Logistic Loss functions for binary and categorical classification, rspectively). <br />
 
 Within those loss (cost) functions, I incroporated elastic-net regularization in order to enhance model accuracy, and I used gradient descent to optimize the choice of model parameters with each client-server iteration. <br />
 
-### <u> Global Model Metrics </u>
+<u> ### Global Model Metrics </u>
 To have concrete evidence that supports the hypothesis, I used a total of 5 metrics to compare final results.
 
-1. <u> Total Number of Iterations for Global Model Convergence </u>
+1. <ins> Total Number of Iterations for Global Model Convergence </ins>
 This measure is a discrete value (_read: natural number_) that represents the total number of times for client-server iterations required to reach global model convergence 
 
 2. <u> Total (Computational) Time for Global Model Convergence </u>
