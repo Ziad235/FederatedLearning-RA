@@ -65,5 +65,5 @@ Federated Learning is a ground-breaking idea that advances the use of data priva
 
 Feel free to reach out to [me](mailto:zmh6339@nyu.edu) and/or [Professor Fida Dankar](mailto:fd2242@nyu.edu) for any questions. <br />
 
-*_Please note that for (intellectual) copyright reasons, concrete code cannot be published now until the typed up paper is submitted and accepted for publishing._*
+*_Please note that for (intellectual) copyright reasons, concrete code regarding main content of this project cannot be published now until the typed up paper is submitted and accepted for publishing._*
 
