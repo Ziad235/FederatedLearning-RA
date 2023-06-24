@@ -2,10 +2,12 @@
 # The Effects of Using Synthetic Data in a Federated Learning Enviornment 
 
 >## Background Information
+
 This stage of research is a continuation of a "further experiemnts" step in [Professor Fida Dankar's](https://scholar.google.ae/citations?user=JvxSJRwAAAAJ&hl=en) previous [paper](https://ieeexplore.ieee.org/document/10068615). <br /> 
 The results of this experiment are currently being typed up and will then be submitted for publication.
 ---
 >## Research Hypothesis 
+
 Using synthetic data on any machine learning model in a Federated Learning enviornment results in a statistically significant decrease in the total number of iterations and computational time needed for global model convergence while still maintaining a comparable accuracy[^1] to the global model that was achieved without the use of synthetic data. 
 ---
 [^1]: The differences between the final global model's prediction accuracy, model fit, and error rate when using synthetic data and not using synthetic data are statistically significant.
@@ -13,7 +15,7 @@ Using synthetic data on any machine learning model in a Federated Learning envio
 >## Research Methods
 
 + ### Enviornment Setup
-To create a Federated Learning enviornment, I used [TensorFlow Federated API](https://www.tensorflow.org/federated/api_docs/python/tff).
+> To create a Federated Learning enviornment, I used [TensorFlow Federated API](https://www.tensorflow.org/federated/api_docs/python/tff).
 
 + ### Machine Learning Model
 I used a logisitc regression model as the main machine learning model for each client, since linear regression was used in the original paper instead. <br />
