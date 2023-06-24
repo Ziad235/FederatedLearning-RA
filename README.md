@@ -14,38 +14,38 @@ Using synthetic data on any machine learning model in a Federated Learning envio
 
 ## Research Methods
 
-<u> ### Enviornment Setup </u>
+### <ins> Enviornment Setup </ins>
 To create a Federated Learning enviornment, I used [TensorFlow Federated API](https://www.tensorflow.org/federated/api_docs/python/tff).
 
-<u> ### Machine Learning Model </u>
+### <ins> Machine Learning Model </ins>
 I used a logisitc regression model as the main machine learning model for each client, since linear regression was used in the original paper instead. <br />
 
-<u> ### Synthetic Data Generator </u>
+### <ins> Synthetic Data Generator </ins>
 To generate the synthetic data, I automated the process of using synthpop (non-parametric) synthetic data generator that can be found in this [repository](https://github.com/hazy/synthpop).
 
-<u> ### Credibility of Final Global Model </u>
+### <ins> Credibility of Final Global Model </ins>
 To have concrete criterea for global model convergence, I used Binary Cross Entropy and Categorical Cross Entropy (which are basically Logistic Loss functions for binary and categorical classification, rspectively). <br />
 
 Within those loss (cost) functions, I incroporated elastic-net regularization in order to enhance model accuracy, and I used gradient descent to optimize the choice of model parameters with each client-server iteration. <br />
 
-<u> ### Global Model Metrics </u>
+### <ins> Global Model Metrics </ins>
 To have concrete evidence that supports the hypothesis, I used a total of 5 metrics to compare final results.
 
-1. <ins> Total Number of Iterations for Global Model Convergence </ins>
+1. <ins> Total Number of Iterations for Global Model Convergence </ins> <br />
 This measure is a discrete value (_read: natural number_) that represents the total number of times for client-server iterations required to reach global model convergence 
 
-2. <u> Total (Computational) Time for Global Model Convergence </u>
+2. <ins> Total (Computational) Time for Global Model Convergence </ins> <br />
 This measure is a continuous value (_read: positive real number_) that represents the total time taken required to reach global model convergence.
 
-3. <u> Logistic Loss Function Value of Final Global Model </u>
+3. <ins> Logistic Loss Function Value of Final Global Model </ins> <br />
 This measure is a continuous value (_read: positive real number_) between 0 and 1 (inclusive), which represents the error margin/rate of the final global model. <br />
 For elaboration, the closer the value is to 0 the less error in predicition.
 
-4. <u> Logarithmic Likelihood </u>
+4. <ins> Logarithmic Likelihood </ins> <br />
 This measure is a continuous value (_read: non-positive real number) between $-\infty$ and 0 that represents how well the final globel model fits the overall data. <br />
 For elaboration, the closer the value is to 0 the better fit the model is to the overall data.
 
-5. <u> Crude Approximate Accuracy </u>
+5. <ins> Crude Approximate Accuracy </ins> <br />
 This measure is a continuous value (_read: positive real number_) between 0 and 1 that represents an approximation of model prediciton accuracy (the closer to 1 the more accurate). <br />
 For context, this metric is given by simply evaluating $e^{-LL}$, where $LL$ is the Logistic Loss value of the final global model.
 
