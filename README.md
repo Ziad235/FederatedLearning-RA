@@ -5,11 +5,11 @@
 
 This stage of research is a continuation of a "further experiemnts" step in [Professor Fida Dankar's](https://scholar.google.ae/citations?user=JvxSJRwAAAAJ&hl=en) previous [paper](https://ieeexplore.ieee.org/document/10068615). <br /> 
 The results of this experiment are currently being typed up and will then be submitted for publication.
----
+
 ## Research Hypothesis 
 
 Using synthetic data on any machine learning model in a Federated Learning enviornment results in a statistically significant decrease in the total number of iterations and computational time needed for global model convergence while still maintaining a comparable accuracy[^1] to the global model that was achieved without the use of synthetic data. 
----
+
 [^1]: The differences between the final global model's prediction accuracy, model fit, and error rate when using synthetic data and not using synthetic data are statistically significant.
 
 ## Research Methods
