@@ -56,7 +56,7 @@ Further information about the datasets can be found in the __Project_Information
 
 ## Results
 The results confirmed our hypothesis, with a substantial differences in total number of iterations and computational time needed for global model convergence and comparable accuracies. <br />
-Further details can be found in the "Project_Information" folder.
+Further details can be found in the __Project_Information__ folder.
 
 ## Further Notes
 Please read the __Project_Information__ folder to learn and understand more about this project and its impactful results. <br />
