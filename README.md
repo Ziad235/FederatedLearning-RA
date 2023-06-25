@@ -52,14 +52,14 @@ For context, this metric is given by simply evaluating $e^{-LL}$, where $LL$ is 
 ## Data
 I used 6 distinct datasets (retrieved from UCI except one of them, which was personally sent to me by Professor Fida), each with its own number of clients. <br />
 The datasets had outcome variables that were either binary or categorical. <br />
-Further information about the datasets can be found in the "Project_Information" folder.
+Further information about the datasets can be found in the __Project_Information__ folder.
 
 ## Results
 The results confirmed our hypothesis, with a substantial differences in total number of iterations and computational time needed for global model convergence and comparable accuracies. <br />
 Further details can be found in the "Project_Information" folder.
 
 ## Further Notes
-Please read the "Project_Information" folder to learn and understand more about this project and its impactful results. <br />
+Please read the __Project_Information__ folder to learn and understand more about this project and its impactful results. <br />
 
 Federated Learning is a ground-breaking idea that advances the use of data privacy in and brings it at the forefront of producing highly scalable and reliable models. <br />
 
