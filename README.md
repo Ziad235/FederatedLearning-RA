@@ -4,7 +4,7 @@
 ## Background Information
 
 This stage of research is a continuation of a "further experiments" step in [Professor Fida Dankar's](https://scholar.google.ae/citations?user=JvxSJRwAAAAJ&hl=en) previous [paper](https://ieeexplore.ieee.org/document/10068615). <br /> 
-The results of this experiment are currently being typed up and will then be submitted for publication
+The results of this experiment are currently being typed up and will then be submitted for publication.
 
 ## Research Hypothesis 
 
