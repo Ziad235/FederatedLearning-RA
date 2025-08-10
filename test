@@ -1,25 +1,21 @@
 # pip install openai-agents python-dotenv
-# .env should define: AZURE_API_KEY, AZURE_API_BASE, AZURE_API_VERSION
+# .env: AZURE_API_KEY, AZURE_API_BASE, AZURE_API_VERSION
 
-import asyncio, re, os, sys
+import os, asyncio, re, sys, json
 from dotenv import load_dotenv
-
 from agents import Agent, Runner, OpenAIResponsesModel
 from agents.tool import HostedMCPTool
 
-# ====== Load env (.env for local dev, env vars in prod) ======
 load_dotenv()
-AZURE_API_KEY = os.getenv("AZURE_API_KEY")            # e.g. 'xxxxxxxx...'
-AZURE_API_BASE = os.getenv("AZURE_API_BASE")          # e.g. 'https://<your-resource>.openai.azure.com/'
-AZURE_API_VERSION = os.getenv("AZURE_API_VERSION")    # e.g. '2024-10-21' (or your chosen version)
-
+AZURE_API_KEY = os.getenv("AZURE_API_KEY")
+AZURE_API_BASE = os.getenv("AZURE_API_BASE")
+AZURE_API_VERSION = os.getenv("AZURE_API_VERSION")
 if not (AZURE_API_KEY and AZURE_API_BASE and AZURE_API_VERSION):
-    print("Missing Azure env vars: AZURE_API_KEY / AZURE_API_BASE / AZURE_API_VERSION", file=sys.stderr)
-    sys.exit(1)
+    print("Missing Azure env vars", file=sys.stderr); sys.exit(1)
 
-# ====== Config you can tweak ======
-MCP_URL = "http://127.0.0.1:8000"      # if using mcp-proxy server mode: "http://127.0.0.1:8932/sse"
-INPUT_PPTX = "input_with_tokens.pptx"  # optional existing deck with [Tokens]
+# Config
+MCP_URL = "http://127.0.0.1:8000"      # or your HTTPS URL in prod
+INPUT_PPTX = "input_with_tokens.pptx"  # optional
 OUTPUT_PPTX = "output_filled.pptx"
 
 # Map [Token] -> value
@@ -29,121 +25,56 @@ VALUES = {
     "Owner": "Noura Ibrahim",
 }
 
-TOKEN_RE = re.compile(r"\[([^\]]+)\]")  # matches [TokenName]
+model = OpenAIResponsesModel(
+    model="azure:gpt-4o-mini",
+    api_key=AZURE_API_KEY,
+    api_base=AZURE_API_BASE,
+    api_version=AZURE_API_VERSION,
+)
+
+ppt = HostedMCPTool(tool_config={
+    "type": "mcp",
+    "server_label": "ppt",
+    "server_url": MCP_URL,
+    "allowed_tools": [
+        "create_presentation","open_presentation","save_presentation",
+        "extract_presentation_text","extract_slide_text","get_slide_info","add_slide",
+        "populate_placeholder","add_bullet_points","manage_text","get_presentation_info",
+    ],
+    "require_approval": "never",
+})
+
+agent = Agent(
+    name="PlaceholderPopulator",
+    instructions=(
+        "You are a precise PowerPoint editor. "
+        "If a presentation path is provided, open it; otherwise create a new one. "
+        "For each slide, discover placeholders or text shapes that contain [Tokens]. "
+        "Replace [Token]s using the mapping provided by the user. "
+        "Prefer real placeholders with populate_placeholder; otherwise edit the shape text. "
+        "Finally, save the deck to the requested path."
+    ),
+    tools=[ppt],
+    model=model,
+)
 
 async def main():
-    # 1) Model: Azure OpenAI Responses API (Agents SDK)
-    model = OpenAIResponsesModel(
-        model="azure:gpt-4o-mini",      # Azure-hosted model id
-        api_key=AZURE_API_KEY,
-        api_base=AZURE_API_BASE,
-        api_version=AZURE_API_VERSION,
+    task = (
+        f"Token map (JSON): {json.dumps(VALUES)}\n"
+        f"Input file (if exists): {INPUT_PPTX}\n"
+        f"Output file: {OUTPUT_PPTX}\n\n"
+        "Steps:\n"
+        "1) If input file exists, open it; else create a new presentation and add a Title+Content slide "
+        "   with sample tokens [ClientName], [Owner], [Subtitle].\n"
+        "2) For each slide, locate any [Token] occurrences via get_slide_info / extract_*.\n"
+        "3) Replace tokens using the map. Use populate_placeholder for true placeholders; "
+        "   otherwise update shape text via manage_text (format_runs is OK).\n"
+        "4) Save the presentation to the output path.\n"
+        "Return a short log of what you changed."
     )
 
-    # 2) Hosted MCP tool (remote server)
-    ppt = HostedMCPTool(tool_config={
-        "type": "mcp",
-        "server_label": "ppt",
-        "server_url": MCP_URL,
-        "allowed_tools": [
-            # presentation
-            "create_presentation", "open_presentation", "save_presentation",
-            # discovery / slides
-            "extract_presentation_text", "extract_slide_text", "get_slide_info", "add_slide",
-            # writing
-            "populate_placeholder", "add_bullet_points", "manage_text",
-            # (optional, some servers expose this)
-            "get_presentation_info",
-        ],
-        "require_approval": "never",
-    })
-
-    agent = Agent(
-        name="PlaceholderPopulator",
-        instructions=(
-            "You are a precise PowerPoint editing agent. "
-            "Use discovery tools to locate tokens like [ClientName] on each slide and "
-            "replace them—prefer placeholders first; otherwise replace the text in shapes."
-        ),
-        tools=[ppt],
-        model=model,
-    )
-
-    # Helper to call a tool
-    async def call(tool_name, **kwargs):
-        return await Runner.call_tool(agent, "ppt", tool_name, kwargs)
-
-    # 3) Open an existing deck OR create a demo one
-    if os.path.exists(INPUT_PPTX):
-        r = await call("open_presentation", file_path=INPUT_PPTX)
-        if "error" in r: raise RuntimeError(r["error"])
-        pres_id = r["presentation_id"]
-    else:
-        r = await call("create_presentation")
-        if "error" in r: raise RuntimeError(r["error"])
-        pres_id = r["presentation_id"]
-        # Add a Title + Content slide and seed demo tokens
-        r = await call("add_slide", layout_index=1, title="[ClientName] Kickoff", presentation_id=pres_id)
-        if "error" in r: raise RuntimeError(r["error"])
-        slide_idx = r["slide_index"]
-        # Add body text token
-        await call("manage_text", slide_index=slide_idx, operation="add",
-                   text="Owner: [Owner]\nSubtitle: [Subtitle]", left=1.5, top=2.5, width=7, height=2,
-                   presentation_id=pres_id)
-
-    # 4) Discover tokens slide by slide
-    info = await call("get_presentation_info", presentation_id=pres_id)
-    if "error" in info: raise RuntimeError(info["error"])
-    slides = info.get("slides", [])
-    total_slides = info.get("slide_count", len(slides)) or len(slides)
-
-    if not slides:
-        ext = await call("extract_presentation_text", presentation_id=pres_id, include_slide_info=True)
-        if "error" in ext: raise RuntimeError(ext["error"])
-        total_slides = ext.get("total_slides", 0)
-
-    # 5) For each slide, find text & targets → replace
-    for i in range(total_slides):
-        slide_info = await call("get_slide_info", slide_index=i, presentation_id=pres_id)
-        if "error" in slide_info:
-            continue  # skip on error
-
-        placeholders = slide_info.get("placeholders", []) or []
-        shapes = slide_info.get("shapes", []) or []
-
-        # First, placeholders
-        for ph in placeholders:
-            idx = ph.get("idx")
-            txt = ph.get("text") or ""
-            def replace_token(m):
-                key = m.group(1)
-                return VALUES.get(key, m.group(0))
-            new_txt = TOKEN_RE.sub(replace_token, txt)
-            if new_txt != txt:
-                await call("populate_placeholder", slide_index=i, placeholder_idx=idx,
-                           text=new_txt, presentation_id=pres_id)
-
-        # Then, non-placeholder shapes
-        for sh in shapes:
-            if not sh.get("has_text"):
-                continue
-            sidx = sh.get("index")
-            txt = (sh.get("text") or "").strip()
-            if not txt:
-                continue
-            def replace_token(m):
-                key = m.group(1)
-                return VALUES.get(key, m.group(0))
-            new_txt = TOKEN_RE.sub(replace_token, txt)
-            if new_txt != txt:
-                await call("manage_text", slide_index=i, operation="format_runs",
-                           shape_index=sidx, text_runs=[{"text": new_txt}],
-                           presentation_id=pres_id)
-
-    # 6) Save
-    r = await call("save_presentation", file_path=OUTPUT_PPTX, presentation_id=pres_id)
-    if "error" in r: raise RuntimeError(r["error"])
-    print("Saved ->", r.get("file_path", OUTPUT_PPTX))
+    result = await Runner.run(agent, task)
+    print(result.final_output)
 
 if __name__ == "__main__":
     asyncio.run(main())
